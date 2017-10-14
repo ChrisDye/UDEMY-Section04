@@ -8,9 +8,9 @@
 UENUM()
 enum class EFiringState : uint8
 {
-	reloading,
-	aiming, 
-	locked
+	Reloading,
+	Aiming, 
+	Locked
 };
 
 class UTankBarrel; // Forward Declaration
@@ -36,11 +36,18 @@ public:
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringState FiringState = EFiringState::locked;
+	EFiringState FiringState = EFiringState::Locked;
 
 private:
 	UTankAimingComponent();
+	
+	virtual void BeginPlay() override;
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+
+	FVector AimDirection;
 	void MoveBarrelTowards(FVector AimDirection);
+	bool IsBarrelMoving();
+
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 	
